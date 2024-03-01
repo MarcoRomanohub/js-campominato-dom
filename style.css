@@ -1,0 +1,45 @@
+.main-wrapper{
+  background-color: cornflowerblue;
+  height: 100vh;
+  position: relative;
+}
+.titolo{
+  position: absolute;
+  left: 0;
+}
+h1{
+  text-align: center;
+}
+.grid-container{
+  width: 500px;
+  aspect-ratio: 1;
+  flex-wrap: wrap;
+}
+
+.square{
+  /* width: 70px;
+  height: 70px; */
+  /* background-color: brown; */
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  flex-grow: 0;
+  cursor: pointer;
+}
+.square100{
+  width: calc(96% / 10);
+  height: calc(96% / 10);
+}
+.square81{
+  width: calc(96% / 9);
+  height: calc(96% / 9);
+}
+.square49{
+  width: calc(97% / 7);
+  height: calc(97% / 7);
+}
+.clicked{
+  background-color: lightskyblue;
+}
