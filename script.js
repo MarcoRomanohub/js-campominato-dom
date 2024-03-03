@@ -1,7 +1,7 @@
 const gridContainer = document.querySelector('.grid-container');
 const btnStart = document.querySelector('.btn-start');
 const levelSelect = document.getElementById('level');
-
+const levels = [100, 81, 49];
 
 let difficultyLevel = levelSelect.value;
 console.log(difficultyLevel);
@@ -19,26 +19,12 @@ btnStart.addEventListener('click', init);
 
 function init(){
   reset();
-  if(difficultyLevel == 0){
-    for(let i =1; i <= 100; i++){
+  squareNumbers = levels[levelSelect.value]
+    for(let i =1; i <= squareNumbers; i++){
       const square = getSquare(i);
       gridContainer.append(square);
-      square.classList.add('square100')
+      square.classList.add('square' + squareNumbers)
     }
-  }else if(difficultyLevel == 1){
-    for(let i =1; i <= 81; i++){
-      const square = getSquare(i);
-      gridContainer.append(square);
-      square.classList.add('square81')
-    }
-  }else{
-    for(let i =1; i <= 49; i++){
-      const square = getSquare(i);
-      gridContainer.append(square);
-      square.classList.add('square49')
-    }
-  }
-  
 }
 
 function getSquare(numero){
@@ -59,11 +45,11 @@ function getSquare(numero){
     // } 
 
     // Metodo ternario :
-    this.innerHTML = (!this.classList.contains('clicked'))
-                      ? this.innerHTML = this._sqID       
-                      : this.innerHTML = '';
+    // this.innerHTML = (!this.classList.contains('clicked'))
+    //                   ? this.innerHTML = this._sqID       
+    //                   : this.innerHTML = '';
 
-    this.classList.toggle('clicked');
+    this.classList.add('clicked');
 
   })
 
