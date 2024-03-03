@@ -3,8 +3,12 @@ const btnStart = document.querySelector('.btn-start');
 const levelSelect = document.getElementById('level');
 const levels = [100, 81, 49];
 
+let bombs = [];
+let  numeroEstratto = [];
 let difficultyLevel = levelSelect.value;
 console.log(difficultyLevel);
+let squareNumbers = levels[levelSelect.value];
+
 // TODO: POSSO RACCHIUDERE TUTTO IN UNA FUNZIONE?
 levelSelect.addEventListener('click', function(){
   difficultyLevel = levelSelect.value;
@@ -13,13 +17,24 @@ levelSelect.addEventListener('click', function(){
 btnStart.addEventListener('click', function(){
   difficultyLevel = levelSelect.value;
   console.log(difficultyLevel);
+  squareNumbers = levels[levelSelect.value];
+  
+  for (let i = 0; i < 16; i++) {
+    bombs = Math.ceil(Math.random() * squareNumbers) ;
+    console.log(bombs);
+    numeroEstratto = bombs;
+    console.log('bomba' + numeroEstratto);
+    if(numeroEstratto == bombs){
+  
+    }
+  }
 });
 btnStart.addEventListener('click', init);
+
 // FUNCTIONS ////////
 
 function init(){
   reset();
-  squareNumbers = levels[levelSelect.value]
     for(let i =1; i <= squareNumbers; i++){
       const square = getSquare(i);
       gridContainer.append(square);
@@ -35,19 +50,6 @@ function getSquare(numero){
 
   sq.addEventListener('click', function(){
     console.log(this._sqID);
-    // Mostro il numero nel quadrato
-    // metodo classico :
-
-    // if(this.innerHTML === ''){
-    //   this.innerHTML = this._sqID;
-    // }else{
-    //   this.innerHTML = '';
-    // } 
-
-    // Metodo ternario :
-    // this.innerHTML = (!this.classList.contains('clicked'))
-    //                   ? this.innerHTML = this._sqID       
-    //                   : this.innerHTML = '';
 
     this.classList.add('clicked');
 
