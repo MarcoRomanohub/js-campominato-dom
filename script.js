@@ -1,64 +1,120 @@
-const gridContainer = document.querySelector('.grid-container');
-const btnStart = document.querySelector('.btn-start');
+const main = document.querySelector('.game-wrapper');
+const playBtn = document.getElementById('play');
 const levelSelect = document.getElementById('level');
+const endMessage = document.querySelector('.endMessage');
+
+// DATA
 const levels = [100, 81, 49];
-
+let squareNumbers;
 let bombs = [];
-let  numeroEstratto = [];
-let difficultyLevel = levelSelect.value;
-console.log(difficultyLevel);
-let squareNumbers = levels[levelSelect.value];
+const numBombs = 16;
+let points = 0;
 
-// TODO: POSSO RACCHIUDERE TUTTO IN UNA FUNZIONE?
-levelSelect.addEventListener('click', function(){
-  difficultyLevel = levelSelect.value;
-  console.log(difficultyLevel);
-});
-btnStart.addEventListener('click', function(){
-  difficultyLevel = levelSelect.value;
-  console.log(difficultyLevel);
-  squareNumbers = levels[levelSelect.value];
-  
-  for (let i = 0; i < 16; i++) {
-    bombs = Math.ceil(Math.random() * squareNumbers) ;
-    console.log(bombs);
-    numeroEstratto = bombs;
-    console.log('bomba' + numeroEstratto);
-    if(numeroEstratto == bombs){
-  
-    }
-  }
-});
-btnStart.addEventListener('click', init);
+// EVENTS
+playBtn.addEventListener('click', play)
+
 
 // FUNCTIONS ////////
 
-function init(){
+function play(){
   reset();
-    for(let i =1; i <= squareNumbers; i++){
-      const square = getSquare(i);
-      gridContainer.append(square);
-      square.classList.add('square' + squareNumbers)
-    }
+  squareNumbers = levels[levelSelect.value]
+  
+  bombs = generateBombs();
+  // bombs = [1,2,3];
+  generatePlayground();
 }
 
-function getSquare(numero){
-  const sq = document.createElement('div');
-  sq.className = 'square';
+function generateBombs(){
+  
+  const bombsTemp = [];
+  while (bombsTemp.length < numBombs){
+    const bombId = Math.ceil(Math.random() * squareNumbers);
+    if (!bombsTemp.includes(bombId)) bombsTemp.push(bombId) 
+  }
 
-  sq._sqID = numero;
+  return bombsTemp;
+}
 
-  sq.addEventListener('click', function(){
-    console.log(this._sqID);
+
+function generatePlayground(){
+
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+
+  for (let i = 1; i <= squareNumbers; i++) {
+    const square = createSquare(i);
+    grid.append(square);
+  }
+
+  main.append(grid);
+}
+  
+function createSquare(index) {
+  const square = document.createElement('div');
+  square.className = 'square';
+  square.classList.add('square' + squareNumbers);
+  square._squareID = index;
+  square.addEventListener('click', handleclick)
+  return square;
+}
+
+function handleclick() {
+  console.log('this._squareID', this._squareID);
+
+  if (bombs.includes(this._squareID)) {
+    endGame(false)
+  }else{
+
+    if (!this.classList.contains('clicked')) {
+      points++;
+    }
+    // console.log(points);
 
     this.classList.add('clicked');
 
-  })
+    console.log(points);
 
-  return sq;
+    if (points === squareNumbers - numBombs) {
+      endGame(true)
+    }
+  }
+  this.removeEventListener('click', handleclick)
 }
 
+function endGame(isWin) {
+  let message;
+  showBombs();
+  blockGrid();
+  if (isWin) {
+    message = `Hai Vinto!`;
+  } else{
+    message = `Hai Perso! Punti: ${points} su ${squareNumbers - numBombs}`;
+  }
+  endMessage.innerHTML = message;
+}
+
+function blockGrid() {
+  const endGameEl = document.createElement('div');
+  endGameEl.className = 'end-game';
+  main.append(endGameEl)
+}
+
+function showBombs() {
+
+  const squares = document.querySelectorAll('.square')
+  for (let i = 0; i < squares.length; i++) {
+    const square = squares[i];
+    if (bombs.includes(square._squareID)) {
+      square.classList.add('bomb');
+    }
+  }
+
+}
 
 function reset (){ 
-  gridContainer.innerHTML = '';
+  main.innerHTML = '';
+  points = 0;
+  bombs = [];
+  endMessage.innerHTML = '';
 }
